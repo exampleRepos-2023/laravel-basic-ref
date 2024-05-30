@@ -3,10 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+
+    public function getPost()
+    {
+        $post = Post::where('id', request('post'))->firstOrFail();
+        return view('single-post', [
+            'post' => $post,
+        ]);
+    }
+
     public function storeNewPost(Request $request)
     {
         $incomingFields = $request->validate([
@@ -18,8 +28,8 @@ class PostController extends Controller
         $incomingFields['body']    = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->user()->id;
 
-        Post::create($incomingFields);
-        return redirect('/')->with('success', 'Post created successfully');
+        $newPost = Post::create($incomingFields);
+        return redirect("/post/{$newPost->id}")->with('success', 'Post created successfully');
 
     }
 

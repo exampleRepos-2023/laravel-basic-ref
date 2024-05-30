@@ -21,6 +21,7 @@ namespace App\Models{
  * @property string $title
  * @property string $body
  * @property int $user_id
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post query()

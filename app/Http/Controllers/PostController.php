@@ -4,21 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
-{
+class PostController extends Controller {
 
-    public function getPost()
-    {
-        $post = Post::where('id', request('post'))->firstOrFail();
+    public function showSinglePost(Post $post) {
+        $post['body'] = strip_tags(
+            Str::markdown($post->body), '<p><a><ul><li><strong><em><br>'
+        );
+
         return view('single-post', [
             'post' => $post,
         ]);
     }
 
-    public function storeNewPost(Request $request)
-    {
+    public function storeNewPost(Request $request) {
         $incomingFields = $request->validate([
             'title' => 'required',
             'body'  => 'required',
@@ -33,8 +34,7 @@ class PostController extends Controller
 
     }
 
-    public function showCreateForm()
-    {
+    public function showCreateForm() {
         return view('create-post');
     }
 

@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PostController extends Controller {
+
+    public function deletePost(Post $post) {
+        $post->delete();
+        return redirect('/profile/' . auth()->user()->username)
+            ->with('success', 'Post deleted successfully');
+    }
 
     public function showSinglePost(Post $post) {
         $post['body'] = strip_tags(

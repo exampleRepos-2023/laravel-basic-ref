@@ -5,16 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
-{
-    public function logout()
-    {
+class UserController extends Controller {
+
+    public function showProfile(User $user) {
+        return view('profile-posts', [
+            'username'  => $user->username,
+            'posts'     => $user->posts()->get(),
+            'postCount' => $user->posts()->count()
+        ]);
+    }
+
+    public function logout() {
         auth()->logout();
         return redirect('/')->with('success', 'You are now logged out');
     }
 
-    public function showCorrectHomepage()
-    {
+    public function showCorrectHomepage() {
         if (auth()->check()) {
             return view('homepage-feed');
         } else {
@@ -22,8 +28,7 @@ class UserController extends Controller
         }
     }
 
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
         $incamingFields = request()->validate([
             'loginusername' => 'required',
             'loginpassword' => 'required',
@@ -42,8 +47,7 @@ class UserController extends Controller
         }
     }
 
-    public function register()
-    {
+    public function register() {
         $incamingFields = request()->validate([
             'username' => 'required|min:3|max:20|alpha_dash|unique:users,username',
             'email'    => 'required|email',

@@ -8,6 +8,25 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller {
 
+    public function editPost(Request $request, Post $post) {
+        $incomingFields = $request->validate([
+            'title' => 'required',
+            'body'  => 'required',
+        ]);
+
+        $incomingFields['title'] = strip_tags($incomingFields['title']);
+        $incomingFields['body']  = strip_tags($incomingFields['body']);
+
+        $post->update($incomingFields);
+        return redirect("/post/{$post->id}")->with('success', 'Post created successfully');
+    }
+
+    public function showEditForm(Post $post) {
+        return view('edit-post', [
+            'post' => $post
+        ]);
+    }
+
     public function deletePost(Post $post) {
         $post->delete();
         return redirect('/profile/' . auth()->user()->username)

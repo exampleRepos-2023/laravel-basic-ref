@@ -4,12 +4,51 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 class UserController extends Controller {
+
+    public function storeAvatar(Request $request) {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user = auth()->user();
+
+        // Generate a unique filename for the avatar
+        $filename = $user->id . '-' . uniqid() . '.jpg';
+
+        // Read the avatar file and resize it to 256x256
+        $imgData = ImageManager::imagick()
+            ->read($request->file('avatar'))
+            ->contain(256, 256)->toJpg();
+
+        // Store the avatar image in the public/avatars directory
+        Storage::put('public/avatars/' . $filename, $imgData);
+
+        // Get the old avatar filename
+        $oldAvatar = $user->avatar;
+
+        // Update the user's avatar with the new filename
+        $user->update(['avatar' => $filename]);
+
+        // Delete the old avatar image if it exists
+        if ($oldAvatar != "/fallback-avatar.jpg") {
+            Storage::delete(str_replace('/storage/', '/public/', $oldAvatar));
+        }
+
+        return redirect('/profile/' . $user->username)->with('success', 'Your avatar has been updated');
+    }
+
+    public function showAvatarForm() {
+        return view('avatar-form');
+    }
 
     public function showProfile(User $user) {
         return view('profile-posts', [
             'username'  => $user->username,
+            'avatar'    => $user->avatar,
             'posts'     => $user->posts()->get(),
             'postCount' => $user->posts()->count()
         ]);

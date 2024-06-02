@@ -41,7 +41,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $username
- * @property string|null $avatar
+ * @property-read string|null $avatar
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property mixed $password

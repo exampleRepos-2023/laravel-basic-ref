@@ -5,6 +5,13 @@ use App\Http\Middleware\MustBeLoggedIn;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
+Route::get('/admins-only', function () {
+    if (Gate::allows('admin')) {
+        return 'You are an admin!';
+    }
+    return 'You need to be an admin to see this';
+});
+
 // User related routes
 Route::get('/', [UserController::class, 'showCorrectHomepage'])->name('login');
 Route::post('/register', [UserController::class, 'register'])->middleware('guest');

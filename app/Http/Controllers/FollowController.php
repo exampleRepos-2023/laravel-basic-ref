@@ -15,7 +15,8 @@ class FollowController extends Controller {
 
         // check if you already follow this user
         $existCheck = Follow::where([
-            ['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]])->count();
+            ['user_id', '=', auth()->user()->id], ['followeduser', '=', $user->id]
+        ])->count();
 
         if ($existCheck) {
             return back()->with('error', 'You already follow ' . $user->username);

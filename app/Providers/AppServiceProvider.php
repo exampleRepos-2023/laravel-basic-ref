@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Gate;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -20,5 +21,7 @@ class AppServiceProvider extends ServiceProvider {
         Gate::define('admin', function ($user) {
             return $user->isAdmin === 1;
         });
+
+        Paginator::useBootstrapFive();
     }
 }

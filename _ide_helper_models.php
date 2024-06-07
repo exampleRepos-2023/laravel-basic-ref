@@ -72,6 +72,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $isAdmin
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $feedPost
+ * @property-read int|null $feed_post_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Follow> $followers
  * @property-read int|null $followers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Follow> $following

@@ -51,6 +51,15 @@ class User extends Authenticatable {
         ];
     }
 
+    /**
+     * Retrieves the posts from the user's feed.
+     */
+    public function feedPost() {
+        return $this->hasManyThrough(
+            Post::class, Follow::class, 'user_id', 'user_id', 'id', 'followeduser'
+        );
+    }
+
     public function following() {
         return $this->hasMany(Follow::class, 'user_id');
     }

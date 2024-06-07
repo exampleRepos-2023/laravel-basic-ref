@@ -16,6 +16,29 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property int $user_id
+ * @property int $followeduser
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $userBeingFollowed
+ * @property-read \App\Models\User $userDoingtFollowing
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow whereFolloweduser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Follow whereUserId($value)
+ */
+	class Follow extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $title
@@ -49,6 +72,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $isAdmin
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Follow> $followers
+ * @property-read int|null $followers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Follow> $following
+ * @property-read int|null $following_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Post> $posts

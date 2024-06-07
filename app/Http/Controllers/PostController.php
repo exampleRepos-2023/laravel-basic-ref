@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller {
 
+    public function searchPosts($term) {
+        $posts = Post::search($term)->get();
+        $posts->load('user:id,username,avatar');
+        return $posts;
+    }
+
     public function editPost(Request $request, Post $post) {
         $incomingFields = $request->validate([
             'title' => 'required',

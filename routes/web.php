@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ChatMessage;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Middleware\MustBeLoggedIn;
@@ -39,3 +40,24 @@ Route::get('/search/{term}', [PostController::class, 'searchPosts']);
 Route::get('/profile/{user:username}', [UserController::class, 'profile']);
 Route::get('/profile/{user:username}/followers', [UserController::class, 'profileFollowers']);
 Route::get('/profile/{user:username}/following', [UserController::class, 'profileFollowings']);
+
+
+// Chat Routes
+Route::post('/send-chat-message', function (Request $request) {
+    $formFields = $request->validate([
+        'textvalue' => 'required'
+    ]);
+
+    if (!trim($formFields['textvalue'])) {
+        return response(['message' => 'Message cannot be empty.'], 400);
+    }
+
+    broadcast(new ChatMessage([
+        'username'  => auth()->user()->username,
+        'textvalue' => strip_tags($formFields['textvalue']),
+        'avatar'    => auth()->user()->avatar
+    ]));
+
+    return response(['message' => 'Message sent.'], 200);
+
+})->middleware(MustBeLoggedIn::class);

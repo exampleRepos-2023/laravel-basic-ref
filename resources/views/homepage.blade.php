@@ -7,7 +7,9 @@
                     are
                     reminiscent of the late 90&rsquo;s email forwards? We believe getting back to actually writing is
                     the key to
-                    enjoying the internet again.</p>
+                    enjoying the internet again.
+                    Our users have authored {{ $postsCount }} posts.
+                </p>
             </div>
             <div class="col-lg-5 pl-lg-5 pb-3 py-lg-5">
                 <form action="/register" method="POST" id="registration-form">

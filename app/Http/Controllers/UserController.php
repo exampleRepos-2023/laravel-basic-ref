@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Events\ExampleEvent;
 use App\Models\Follow;
+use App\Models\Post;
 use App\Models\User;
+use Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -124,7 +126,12 @@ class UserController extends Controller {
                 'posts' => auth()->user()->feedPost()->latest()->paginate(5)
             ]);
         } else {
-            return view('homepage');
+            return view('homepage', [
+                $postsCount = Cache::remember('postsCount', now()->addMinutes(10), function () {
+                    return Post::count();
+                }),
+                'postsCount' => $postsCount
+            ]);
         }
     }
 

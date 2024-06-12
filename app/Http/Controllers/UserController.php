@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ExampleEvent;
 use App\Models\Follow;
 use App\Models\Post;
 use App\Models\User;
@@ -131,6 +130,25 @@ class UserController extends Controller {
                     return Post::count();
                 }),
                 'postsCount' => $postsCount
+            ]);
+        }
+    }
+
+    public function loginApi(Request $request) {
+        $incamingFields = request()->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (
+            auth()->attempt($incamingFields)
+        ) {
+            $user  = User::where('username', $incamingFields['username'])->first();
+            $token = $user->createToken('ourapptoken')->plainTextToken;
+            return $token;
+        } else {
+            return response()->json([
+                'success' => false
             ]);
         }
     }
